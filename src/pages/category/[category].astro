@@ -1,0 +1,55 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  const categories = [...new Set(posts.map((p) => p.data.category))];
+  return categories.map((category) => ({
+    params: { category },
+    props: { category, posts },
+  }));
+}
+
+const { category, posts } = Astro.props;
+const list = posts.filter((p) => p.data.category === category).sort((a, b) => b.data.date - a.data.date);
+const description = `${category}栏目 - 一个创业者的思考，记录生意认知与真实思考。`;
+---
+
+<BaseLayout title={category} description={description}>
+  <div class="container cat-page">
+    <header class="cat-head">
+      <h1 class="cat-title">{category}</h1>
+      <p class="cat-sub">共 {list.length} 篇</p>
+    </header>
+    <div class="grid">
+      {
+        list.map((post) => (
+          <PostCard
+            title={post.data.title}
+            description={post.data.description}
+            category={post.data.category}
+            date={post.data.date}
+            slug={post.id.replace(/\.md$/, '')}
+          />
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .cat-page { padding-top: 36px; padding-bottom: 24px; }
+  .cat-head { margin-bottom: 28px; }
+  .cat-title { font-size: 34px; font-weight: 800; letter-spacing: -0.5px; }
+  .cat-sub { color: var(--text-soft); margin-top: 6px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 22px;
+  }
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>

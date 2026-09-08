@@ -1,0 +1,17 @@
+# 依赖
+node_modules/
+
+# 构建产物（dist 单独部署到 gh-pages）
+dist/
+
+# Astro 缓存
+.astro/
+
+# 工具
+.web_builder/
+__pycache__/
+*.pyc
+
+# 系统
+.DS_Store
+Thumbs.db

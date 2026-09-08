@@ -1,0 +1,130 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+
+const posts = (await getCollection('posts')).sort((a, b) => b.data.date - a.data.date);
+const latest = posts.slice(0, 9);
+
+const categories = [
+  { name: '赚钱与生意', desc: '生意的本质、赚钱的逻辑、可复制的方法', icon: '钱' },
+  { name: '个人成长', desc: '认知觉醒、AI时代个体提升、实践方法论', icon: '长' },
+  { name: '情绪价值', desc: '情绪经济、商业造节、被忽视的需求', icon: '绪' },
+  { name: '行业分析', desc: '软件 / AI / 餐饮 / 美业 / 中医 / 便利店', icon: '业' },
+  { name: '职场生存', desc: '把话听明白、把活干漂亮、少走弯路', icon: '职' },
+  { name: '经营故事', desc: '开店踩坑、小生意门道、创业实战', icon: '店' },
+  { name: '时事观察', desc: '从热点里看生意的门道', icon: '察' },
+];
+---
+
+<BaseLayout title="一个创业者的思考" description="把生意想明白，把日子过踏实。记录一个创业者的真实思考：赚钱本质、个人成长、情绪价值、行业分析、职场与经营。">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <h1 class="hero-title">一个创业者的思考</h1>
+      <p class="hero-slogan">把生意想明白，把日子过踏实。</p>
+      <p class="hero-sub">不讲虚的，只讲怎么做成事。这里有赚钱的本质、生意的门道、普通人的成长路径。</p>
+      <div class="hero-actions">
+        <a class="btn" href="#latest">看最新文章</a>
+        <a class="btn btn-outline" href="#categories">浏览栏目</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 栏目导航 -->
+  <section class="categories container" id="categories">
+    <h2 class="section-title">栏目</h2>
+    <p class="section-sub">按主题逛，挑你关心的看</p>
+    <div class="cat-grid">
+      {
+        categories.map((c) => (
+          <a class="cat-card" href={`/category/${c.name}`}>
+            <span class="cat-icon">{c.icon}</span>
+            <div>
+              <h3>{c.name}</h3>
+              <p>{c.desc}</p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- 最新文章 -->
+  <section class="latest container" id="latest">
+    <h2 class="section-title">最新文章</h2>
+    <p class="section-sub">刚整理出炉的想法</p>
+    {
+      latest.length > 0 ? (
+        <div class="grid">
+          {
+            latest.map((post) => (
+              <PostCard
+                title={post.data.title}
+                description={post.data.description}
+                category={post.data.category}
+                date={post.data.date}
+                slug={post.id.replace(/\.md$/, '')}
+              />
+            ))
+          }
+        </div>
+      ) : (
+        <p class="empty">内容整理中，敬请期待。</p>
+      )
+    }
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, #1f3140 100%);
+    color: #fff;
+    padding: 72px 0 64px;
+  }
+  .hero-inner { max-width: 760px; text-align: center; }
+  .hero-title { font-size: 44px; font-weight: 800; letter-spacing: -1px; }
+  .hero-slogan { font-size: 22px; color: #ffd9d5; margin-top: 14px; font-weight: 600; }
+  .hero-sub { color: rgba(255,255,255,0.72); margin-top: 16px; font-size: 16px; line-height: 1.8; }
+  .hero-actions { margin-top: 30px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .hero .btn-outline { color: #fff; border-color: rgba(255,255,255,0.5); }
+  .hero .btn-outline:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+  .categories { padding-top: 52px; }
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .cat-card {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    color: var(--text);
+    transition: transform .16s ease, border-color .18s ease, box-shadow .18s ease;
+  }
+  .cat-card:hover { transform: translateY(-2px); border-color: var(--accent); color: var(--text); box-shadow: var(--shadow-md); }
+  .cat-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: var(--accent-soft); color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 700; flex-shrink: 0;
+  }
+  .cat-card h3 { font-size: 16.5px; font-weight: 700; margin-bottom: 5px; }
+  .cat-card p { font-size: 13.5px; color: var(--text-soft); line-height: 1.6; }
+
+  .latest { padding-top: 52px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 22px; }
+  .empty { color: var(--text-faint); padding: 30px 0; }
+
+  @media (max-width: 640px) {
+    .hero { padding: 48px 0 44px; }
+    .hero-title { font-size: 32px; }
+    .hero-slogan { font-size: 18px; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>

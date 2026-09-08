@@ -1,0 +1,68 @@
+---
+const year = new Date().getFullYear();
+const slogan = '把生意想明白，把日子过踏实。';
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">一个创业者的思考</div>
+      <p class="footer-slogan">{slogan}</p>
+    </div>
+    <div class="footer-cats">
+      <h4>栏目</h4>
+      <ul>
+        <li><a href="/category/赚钱与生意">赚钱与生意</a></li>
+        <li><a href="/category/个人成长">个人成长</a></li>
+        <li><a href="/category/情绪价值">情绪价值</a></li>
+        <li><a href="/category/行业分析">行业分析</a></li>
+        <li><a href="/category/职场生存">职场生存</a></li>
+        <li><a href="/category/经营故事">经营故事</a></li>
+        <li><a href="/category/时事观察">时事观察</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© {year} 一个创业者的思考</span>
+    <span>记录一个创业者的真实思考与生意认知</span>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.85);
+    margin-top: 64px;
+  }
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 40px;
+    padding-top: 44px;
+    padding-bottom: 32px;
+  }
+  .footer-logo {
+    font-size: 19px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .footer-slogan { color: rgba(255,255,255,0.6); margin-top: 10px; font-size: 14px; }
+  .footer-cats h4 { color: #fff; font-size: 14px; margin-bottom: 12px; font-weight: 600; }
+  .footer-cats ul { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 20px; }
+  .footer-cats a { color: rgba(255,255,255,0.7); font-size: 14px; }
+  .footer-cats a:hover { color: #fff; }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 16px;
+    padding-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  @media (max-width: 640px) {
+    .footer-inner { grid-template-columns: 1fr; gap: 28px; }
+  }
+</style>

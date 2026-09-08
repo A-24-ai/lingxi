@@ -1,0 +1,75 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  category: string;
+  date: Date;
+  slug: string;
+}
+const { title, description, category, date, slug } = Astro.props;
+const dateStr = date.toISOString().slice(0, 10);
+---
+
+<a class="card" href={`/posts/${slug}/`}>
+  <span class="cat">{category}</span>
+  <h3 class="title">{title}</h3>
+  <p class="desc">{description}</p>
+  <span class="meta">
+    <time datetime={dateStr}>{dateStr}</time>
+    <span class="more">阅读全文 →</span>
+  </span>
+</a>
+
+<style>
+  .card {
+    display: block;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px 22px 18px;
+    box-shadow: var(--shadow);
+    color: var(--text);
+    transition: transform .16s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent);
+    color: var(--text);
+  }
+  .cat {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+  .title {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.45;
+    margin-bottom: 8px;
+  }
+  .desc {
+    font-size: 14px;
+    color: var(--text-soft);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text-faint);
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+  }
+  .more { color: var(--accent); font-weight: 500; }
+</style>

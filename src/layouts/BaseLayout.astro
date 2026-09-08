@@ -1,0 +1,45 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = '一个创业者的思考', description = '把生意想明白，把日子过踏实。记录一个创业者的真实思考。' } = Astro.props;
+const siteName = '一个创业者的思考';
+const pageTitle = title === siteName ? siteName : `${title} | ${siteName}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="generator" content={Astro.generator} />
+  <title>{pageTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:site_name" content={siteName} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    .page-wrap { min-height: 100vh; display: flex; flex-direction: column; }
+    main { flex: 1; }
+  </style>
+</head>
+<body>
+  <div class="page-wrap">
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </div>
+</body>
+</html>
